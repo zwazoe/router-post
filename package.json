@@ -1,23 +1,20 @@
 {
 	"name": "router-post",
-	"description": "",
 	"version": "1.0.0",
+	"description": "quickly objectify your data and post to the db",
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/memorybasedlearning/router-post.git"
+		"url": "git+https://github.com/memorybasedlearning/router-post.git"
 	},
-	"keywords": [ "router", "post", "api" ],
+	"keywords": [ "router", "post", "api", "react" ],
 	"author": "Lesly Revenge",
 	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/memorybasedlearning/router-post/issues"
 	},
-	"homepage": "https://github.com/memorybasedlearning/router-post",
-	"dependencies": {
-		"router-post": "^1.0.0"
-	}
+	"homepage": "https://github.com/memorybasedlearning/router-post#readme"
 }
