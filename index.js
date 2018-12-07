@@ -1,5 +1,5 @@
 class Objectify {
-	constructor(source, payload = [], separator = '_') {
+	constructor(source, payload = [], separator = '_', myArray = { myArrays: [ 'detail', 'place' ], level: 0 }) {
 		// source is the location of fields such as req.body
 		this.source = source;
 		// assign the payload that build the payload = [creator, owner, address]
@@ -11,6 +11,7 @@ class Objectify {
 		this.obj = {};
 		// initiate the empty field object that will be returned
 		this.fields = {};
+		this.myArray = myArray;
 	}
 	run() {
 		this.payload.map((field) => {
@@ -31,9 +32,20 @@ class Objectify {
 				Object.assign(this.fields, obj);
 			}
 		});
+		// check to see if any of the keys are an array
+
+		if (this.myArray.level == 0 && this.myArray.myArrays.length > 0) {
+			let keys = Object.keys(this.fields);
+			keys.forEach((key) => {
+				if (this.myArray.myArrays.includes(key)) {
+					this.fields[key] = [ this.fields[key] ];
+				}
+			});
+		}
 		// return the fields.
 		return this.fields;
 	}
+	post(route) {}
 }
 
 module.exports = {
