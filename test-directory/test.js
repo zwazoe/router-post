@@ -6,11 +6,11 @@ let payload = [
 	'address',
 	'googleid',
 	'placeid',
-	'place_address_creator',
-	'place_address_apartment',
-	'place_address_category',
-	'detail_notes_creator',
-	'detail_notes_notes'
+	'address_creator',
+	'address_apartment',
+	'address_category',
+	'notes_creator',
+	'notes_detail_information_comment_go'
 ];
 
 let req = {
@@ -18,11 +18,11 @@ let req = {
 		creator: 'faslfjdsfsfs',
 		owner: 'ajslfjsalfsfdjfs',
 		placeid: 'fakfwrewerjwtjet',
-		place_address_creator: 'fasdghdhfd',
-		place_address_apartment: '23',
-		place_address_category: [ 'home', 'business' ],
-		detail_notes_creator: 'gjghjt',
-		detail_notes_notes: 'This is a note'
+		address_creator: 'fasdghdhfd',
+		address_apartment: '23',
+		address_category: [ 'home', 'business' ],
+		notes_creator: 'gjghjt',
+		notes_detail_information_comment_go: 'This is a note'
 	}
 };
 
