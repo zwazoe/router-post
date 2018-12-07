@@ -1,5 +1,5 @@
 class Objectify {
-	constructor(source, payload = [], separator = '_', myArray = { myArrays: [ 'detail', 'place' ], level: 0 }) {
+	constructor(source, payload = [], separator = '_', myArray = { myArrays: [], level: 0 }) {
 		// source is the location of fields such as req.body
 		this.source = source;
 		// assign the payload that build the payload = [creator, owner, address]
