@@ -413,7 +413,7 @@ If you want to manually add an item to this array, you would add the addons like
 }
 ````
 
-## Test Script
+## Ready Script
 
 ````
 const express = require('express');
@@ -469,7 +469,7 @@ let data = routerPost.objectify(req.body, mapPayload);
 data.updated_at = Date.now();
 router.get('/current-place', passport.authenticate('jwt', { session: false }), (req, res) => {
 
-routerPost.findPostOne(Place, null, { id: data.id }, [
+routerPost.findPostOne(Place, [data, req, res], { id: data.id }, [
 		{
 			condition: data.address[0].creator !== undefined,
 			push: [
