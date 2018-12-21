@@ -148,18 +148,9 @@ let mapPayload = [
   BEFORE using Router-Post
   
 ````
-const express = require('express');
-const router = express.Router();
-const mongoose = require('mongoose');
-const passport = require('passport');
-
-// Load Place  Model
-const Place = require('../../../models/people/Place');
-// Load User Model
-const User = require('../../../models/people/User');
 
 router.post('/', passport.authenticate('jwt', { session: false }), (req, res) => {
-// Get fields
+
 	const placeFields = {};
 	placeFields.user = req.user.id;
 	if (req.body.creator) placeFields.handle = req.body.creator;
@@ -201,7 +192,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
   AFTER:
   
 ````
-  const express = require('express');
+const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const passport = require('passport');
@@ -212,8 +203,6 @@ const Place = require('../../../models/people/Place');
 const User = require('../../../models/people/User');
 
 router.post('/', passport.authenticate('jwt', { session: false }), (req, res) => {
-
-
 	let mapPayload = [
 		'creator',
 		'owner',
@@ -227,8 +216,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
 		'label',
 		'types',
 	];
-  let data = routerPost.objectify(req.body.place, mapPayload);
-
+	let data = routerPost.objectify(req.body.place, mapPayload);
 	routerPost.findPostOne(Place, [ data, req, res ], { id: data.id }, []);
 })
  ````
