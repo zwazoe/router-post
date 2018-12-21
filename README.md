@@ -296,12 +296,6 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
 					field: 'address',
 					value: data.address[0]
 				}
-			],
-			addons: [
-				{
-					field: 'updated_at',
-					value: Date.now()
-				}
 			]
 		},
 		{
@@ -324,4 +318,50 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
   ````
   
 Let's explain the above code. 
-First, I will set a condition if there is one. If the condition is true, 
+
+first, when you create myArray that includes address and notes. 
+It will map the content of the array but it will not add the data. This is because, you may want to add more than oneset of data to your array. 
+
+I did this for a reason. Most likely, you may want to create a different route that will add your address or notes. This technique able you to do that. Here's how it works. 
+
+You wil include your condition. If the condition is true, it will work. If you don't have a logic for this, just pass in true. 
+
+````
+condition: data.address[0].creator !== undefined
+
+or
+
+condition: true
+
+````
+
+then, you will create the items that you want to push. This is an array, you can add as many item as you like. 
+````
+	push: [
+		{
+			field: 'address',
+			value: data.address[0]
+		}
+	]
+
+````
+If you want to manually add an item to this array, you would add the addons like so:
+
+````
+{
+	condition: data.address[0].creator !== undefined,
+	push: [
+		{
+			field: 'address',
+			value: data.address[0]
+		}
+	],
+	addons: [
+		{
+			field: 'updated_at',
+			value: Date.now()
+		}
+	]
+}
+````
+
