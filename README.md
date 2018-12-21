@@ -1,25 +1,96 @@
 # router-post
-DRY method of creating and posting to the database. At first it may seems difficult and overwhelming but it is not. Just follow the documentation and you will save plenty of time.
+DRY method of creating and posting to the database. You will no longer need to copy and paste the same things over and over again.
 
 ## Why router post:
 
-Other than the fact that router post is very lightweight, here's another reason.
-You probably have found yourself using the same logic over and over again when you are posting to the database. 
+Router Post is very lightweight and you won't have to worry about much logics when posting to the database. You simply  have to tell router-post what is what.
 
-We will great a router-post in order to add item from google place api. In addition, we will add items that does not come from the api itself.
+### small project
+Lets create a small project where you must add data to the database. The data will conside of objects and arrays. Here is the model. 
+
+````
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+// Address Schema
+const PlaceSchema = new Schema({
+	owner: String,
+
+	creator: {
+		type: Schema.Types.ObjectId,
+		ref: 'users'
+	},
+	id: {
+		type: 'string'
+	},
+
+	name: String,
+	formatted_address: String,
+	formatted_phone_number: String,
+	types: [ String ],
+	label: String,
+	icon: {
+		type: 'string'
+	},
+	place_id: {
+		type: 'string'
+	},
+
+	location: {},
+	created_at: {
+		type: Date,
+		default: Date.now()
+	},
+	updated_at: {
+		type: Date
+	},
+	notes: [
+		{
+			creator: {
+				type: Schema.Types.ObjectId,
+				ref: 'users'
+			},
+			detail: {
+				type: String
+			},
+			created_at: {
+				type: Date,
+				default: Date.now()
+			}
+		}
+	],
+	address: [
+		{
+			creator: {
+				type: Schema.Types.ObjectId,
+				ref: 'users'
+			},
+			apartment: String,
+			category: [ String ],
+			created_at: {
+				type: Date,
+				default: Date.now()
+			}
+		}
+	]
+});
+
+module.exports = Place = mongoose.model('place', PlaceSchema);
+
+````
 
 
-1. you have to import router post inot your routes/api folder like so:
 
+1. Then, you would create an place.js file in your routes/api directory. And import router-post. 
 ````
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const passport = require('passport');
-const { RouterPost } = require('../../../libraries/router-post/index');
+const { RouterPost } = require('router-post');
 ````
 
-2. It is a class so you'll have to instantiate it like so:
+2. It is a class so you'll have to instantiate it:
 ````
 let routerPost = new RouterPost();
 ````
@@ -32,7 +103,7 @@ router.post('/create-address', passport.authenticate('jwt', { session: false }),
 ````
 
 4. now, the sweet goodness starts. 
-Noticed on the old way, without router post, you have to write many if and else statement logic in order to map your paylod. Like so:
+If you weren't using router post, for each field, you propbably would have to do the following:
 ````
 if (req.body.creator) profileFields.handle = req.body.creator;
 ````
