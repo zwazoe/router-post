@@ -1,20 +1,26 @@
 {
 	"name": "router-post",
-	"version": "1.2.0",
-	"description": "quickly objectify your data and post to the db",
+	"version": "1.4.0",
+	"description": "create post request without repeating yourself",
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/memorybasedlearning/router-post.git"
+		"url": "git+https://github.com/zwazoe/router-post.git"
 	},
-	"keywords": [ "router", "post", "api", "react" ],
-	"author": "Lesly Revenge",
+	"keywords": [ "router", "post", "api", "database", "mongoDB", "sqlserver", "postgresql", "nosql", "node", "react", "react.js", "express", "mongoose", "bodyParser", "router" ],
+	
+	"author": "Lesly Zwazoe Revenge",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/memorybasedlearning/router-post/issues"
+		"url": "https://github.com/zwazoe/router-post/issues"
 	},
-	"homepage": "https://github.com/memorybasedlearning/router-post#readme"
+	"homepage": "https://github.com/zwazoe/router-post#readme",
+	"dependencies": {
+		"express": "^4.16.4",
+		"mongoose": "^5.3.15",
+		"passport": "^0.4.0"
+	}
 }
