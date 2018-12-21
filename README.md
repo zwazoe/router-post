@@ -368,7 +368,6 @@ If you want to manually add an item to this array, you would add the addons like
 ## Test Script
 
 ````
-// _ indicate a subdomain. Camelcase multiple words.
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -420,6 +419,8 @@ let mapPayload = [
 let data = routerPost.objectify(req.body, mapPayload);
 
 data.updated_at = Date.now();
+router.get('/current-place', passport.authenticate('jwt', { session: false }), (req, res) => {
+
 routerPost.findPostOne(Place, null, { id: data.id }, [
 		{
 			condition: data.address[0].creator !== undefined,
@@ -452,6 +453,8 @@ routerPost.findPostOne(Place, null, { id: data.id }, [
 			]
 		}
 	]);
+
+})
 
 
 
