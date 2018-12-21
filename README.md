@@ -192,15 +192,6 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
   AFTER:
   
 ````
-const express = require('express');
-const router = express.Router();
-const mongoose = require('mongoose');
-const passport = require('passport');
-
-// Load Place  Model
-const Place = require('../../../models/people/Place');
-// Load User Model
-const User = require('../../../models/people/User');
 
 router.post('/', passport.authenticate('jwt', { session: false }), (req, res) => {
 	let mapPayload = [
