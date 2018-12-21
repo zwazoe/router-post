@@ -97,18 +97,19 @@ let routerPost = new RouterPost();
 
 3. Then, you'll start your express, as you normally would:
 ````
-router.post('/create-address', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.post('/create-place', passport.authenticate('jwt', { session: false }), (req, res) => {
   // router-post goes here
 }
 ````
 
 4. now, the sweet goodness starts. 
-If you weren't using router post, for each field, you propbably would have to do the following:
+If you weren't using router post, you'll probably have to do the following for each fields:
 ````
 if (req.body.creator) profileFields.handle = req.body.creator;
 ````
+imagine if you have 50 field. it would be a lots of copy and paste. 
 
-With router post, all you have to do is create an array and add the field to the array. this will do the maping for you. 
+With router post, all you have to do is create an array and add the field to the array. 
 ````
 let mapPayload = [
 		'creator',
@@ -125,16 +126,26 @@ let mapPayload = [
 	];
   ````
   
-  4. You may then call routerPost.objectify to turn your payload to the desired data like so:
-  The first argument is where the payload is comming from. The second argument is to map the payloa like we created above. 
+  4. You may then call routerPost.objectify to turn your payload to the desired data.
+  The first argument is where the payload is comming from. The second argument is the actual payload map. 
+ 
   ````
   let data = routerPost.objectify(req.body.place, mapPayload);
   ````
+   Their is a third argument which is called the separator. The default is '-'. Therefore, if you have any field that includes a -, you'll have to change the seprator. 
   
+  for example. If formated_address was written formated-address. 
+  but you did not want formated-address to be an array. 
+  you would have to include a third argument.
   
-  Here's a before and after of the code so far:
+    ````
+  let data = routerPost.objectify(req.body.place, mapPayload, '|');
+  ````
+  But in my case, I could simply leave it without a seperator because there is no conflict since I am not using the default separator '-'
+ 
+  In order to trully appreciated router-post, here's a before and after of the code so far:
   
-  BEFORE
+  BEFORE using Router-Post
   
   ````
 const express = require('express');
@@ -241,7 +252,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
   
    
   ````
-  const express = require('express');
+const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const passport = require('passport');
@@ -267,24 +278,22 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
 		'label',
 		'types',
     
-    // add arrays
-    'address-apartment',
+    		
+    		'address-apartment',
 		'address-category',
 		'address-creator',
 		'notes-detail',
 		'notes-creator',
 	];
-  // state what is an array and the level of the array. 
-  	let myArray = { myArrays: [ 'address', 'notes' ], level: 0 };
-// add the array separator and the array iteself
-  let data = routerPost.objectify(req.body.place, mapPayload, '-', myArray);
+
+  let data = routerPost.objectify(req.body.place, mapPayload, '-');
 
 	routerPost.findPostOne(Place, [ data, req, res ], { id: data.id }, []);
 })
   
   ````
   
-  In the above code, I first added the arrays. address-apartment state the address is the key that contained the array. and apartment is the another object that have a key that contains apartment. This part of the model may look like this:
+  In the above code, I first added the arrays. address-apartment state the address is the key that contained the array. and apartment is a key inside of the object inside the address array. Here's the model snippet. 
   ````
   address: [{
     apartment: String,
@@ -302,8 +311,8 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
  If you wanted, you could have change the separator to a pipe like so |
  
  ````
- // add arrays
-    'address|apartment',
+ 		// add arrays
+    		'address|apartment',
 		'address|category',
 		'address|creator',
 		'notes|detail',
@@ -311,19 +320,10 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
  
  ````
  
- Second, I state what the array is is. I created a let variable that is called myArray. Inside the object, I added myArrays. I stated that my arrays are address and notes. 
- 
- Because this can be multilevel, I stated that the level is one level array. 
- ````
-  // state what is an array and the level of the array. 
-  	let myArray = { myArrays: [ 'address', 'notes' ], level: 0 };
- ````
- 
- Third, I added the separator and my array
- 
+ If I were to use the above code where I use pipes (|) instead of dashes (-), I would have to state pipes (|) as my separator.
  ````
  // add the array separator and the array iteself
-  let data = routerPost.objectify(req.body.place, mapPayload, '-', myArray);
+  let data = routerPost.objectify(req.body.place, mapPayload, '|');
  ````
  
  Now, such a complex router is simplified and dried up using router-post:
@@ -334,7 +334,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
  ````
  
  First, I have to pass the model which is Place.
- Then, inside an array, I pass in data, req, res. data is of couse the data that I am saving. Req, res is being passed in order to obviosly make request and also respondng. 
+ Then, inside an array, I pass in data, req, res. data is the data that I am saving. Req and Res are being passed in order to obviosly make requests and also responses. 
  
  Next, I pass in id: data.id. 
  
@@ -342,13 +342,13 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
  
  
  
- 7. Lets say you want to add additional fields. Fields that you are not getting from the database. 
+ 7. Lets say you want to add additional fields. Fields that you are not getting from the datasource (req.body). 
  
  if you want to add an additional field to the data. Let's say you want to created to default updated_at to Date.now().
  You will do the following:
  
  ````
- data.updated_at = Date.now();
+ 	data.updated_at = Date.now();
 	routerPost.findPostOne(Place, [ data, req, res ], { id: data.id }, [])
   
  ````
