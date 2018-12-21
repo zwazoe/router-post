@@ -130,7 +130,7 @@ let mapPayload = [
   The first argument is where the payload is comming from. The second argument is the actual payload map. 
  
   ````
-  let data = routerPost.objectify(req.body.place, mapPayload);
+  	let data = routerPost.objectify(req.body.place, mapPayload);
   ````
    Their is a third argument which is called the separator. The default is '-'. Therefore, if you have any field that includes a -, you'll have to change the seprator. 
   
@@ -138,7 +138,7 @@ let mapPayload = [
   but you did not want formated-address to be an array. 
   you would have to include a third argument.
   
-    ````
+  ````
   let data = routerPost.objectify(req.body.place, mapPayload, '|');
   ````
   But in my case, I could simply leave it without a seperator because there is no conflict since I am not using the default separator '-'
@@ -147,7 +147,7 @@ let mapPayload = [
   
   BEFORE using Router-Post
   
-  ````
+````
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
@@ -196,11 +196,11 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
 		}
 	});
 });
-  ````
+````
   
   AFTER:
   
-  ````
+````
   const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
@@ -231,8 +231,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
 
 	routerPost.findPostOne(Place, [ data, req, res ], { id: data.id }, []);
 })
-  
-  ````
+ ````
   
   so FAR so DRY (haha)
   
@@ -240,7 +239,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
   
   5. Let say you want to add an item with array. 
   The old way, you may have to do something like so:
-  ````
+ ````
   // Skills - Spilt into array
 	if (typeof req.body.category !== 'undefined') {
 		placeFields.category = req.body.category.split(',');
@@ -361,7 +360,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
   ````
  routerPost.findPostOne(Place, [ data, req, res ], { id: data.id }, [
 		{
-			condition: data.address[0].creator !== undefined,
+			condition: true,
 			push: [
 				{
 					field: 'address',
@@ -390,8 +389,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
   
 Let's explain the above code. 
 
-first, when you create myArray that includes address and notes. 
-It will map the content of the array but it will not add the data. This is because, you may want to add more than oneset of data to your array. 
+First, router-post already identified your arrays. It simply identify the array. You'll then have to tell it what to push. 
 
 I did this for a reason. Most likely, you may want to create a different route that will add your address or notes. This technique able you to do that. Here's how it works. 
 
