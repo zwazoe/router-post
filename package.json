@@ -1,6 +1,6 @@
 {
 	"name": "router-post",
-	"version": "1.4.0",
+	"version": "1.4.1",
 	"description": "create post request without repeating yourself",
 	"main": "index.js",
 	"scripts": {
@@ -12,7 +12,7 @@
 	},
 	"keywords": [ "router", "post", "api", "database", "mongoDB", "sqlserver", "postgresql", "nosql", "node", "react", "react.js", "express", "mongoose", "bodyParser", "router" ],
 	
-	"author": "Lesly Zwazoe Revenge",
+	"author": "Lesly ZwaZoe Revenge",
 	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/zwazoe/router-post/issues"

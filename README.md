@@ -6,7 +6,9 @@ DRY method of creating and posting to the database. You will no longer need to c
 Router Post is very lightweight and you won't have to worry about much logics when posting to the database. You simply  have to tell router-post what is what.
 
 ### small project
-Lets create a small project where you must add data to the database. The data will conside of objects and arrays. Here is the model. 
+Lets create a small project where you must add data to the database. The data will consist of objects and arrays.
+
+Let's implement the model.
 
 ````
 const mongoose = require('mongoose');
@@ -81,7 +83,8 @@ module.exports = Place = mongoose.model('place', PlaceSchema);
 
 
 
-1. Then, you would create an place.js file in your routes/api directory. And import router-post. 
+- Then, you should create a place.js file in your routes/api directory. And import router-post. 
+
 ````
 const express = require('express');
 const router = express.Router();
@@ -90,19 +93,19 @@ const passport = require('passport');
 const { RouterPost } = require('router-post');
 ````
 
-2. It is a class so you'll have to instantiate it:
+- It is a class so you'll have to instantiate it:
 ````
 let routerPost = new RouterPost();
 ````
 
-3. Then, you'll start your express, as you normally would:
+- Then, you'll start your express, as you normally would:
 ````
 router.post('/create-place', passport.authenticate('jwt', { session: false }), (req, res) => {
   // router-post goes here
 }
 ````
 
-4. now, the sweet goodness starts. 
+- now, the sweet goodness starts. 
 If you weren't using router post, you'll probably have to do the following for each fields:
 ````
 if (req.body.creator) profileFields.handle = req.body.creator;
@@ -126,13 +129,13 @@ let mapPayload = [
 	];
   ````
   
-  4. You may then call routerPost.objectify to turn your payload to the desired data.
+  - You may then call routerPost.objectify to turn your payload to the desired data.
   The first argument is where the payload is comming from. The second argument is the actual payload map. 
  
   ````
   	let data = routerPost.objectify(req.body.place, mapPayload);
   ````
-   Their is a third argument which is called the separator. The default is '-'. Therefore, if you have any field that includes a -, you'll have to change the seprator. 
+   Their is a third argument which is called the separator. The default is '-'. Therefore, if you have any field that includes a -, you'll have to change the separator. 
   
   for example. If formated_address was written formated-address. 
   but you did not want formated-address to be an array. 
@@ -216,10 +219,10 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
   
   I will tell you about about routerPost.findPostOne later. Hold on a sec.
   
-  5. Let say you want to add an item with array. 
+  - Let say you want to add an item with array. 
   The old way, you may have to do something like so:
  ````
-  // Skills - Spilt into array
+
 	if (typeof req.body.category !== 'undefined') {
 		placeFields.category = req.body.category.split(',');
 	}
@@ -255,9 +258,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
 		'location',
 		'label',
 		'types',
-    
-    		
-    		'address-apartment',
+    	'address-apartment',
 		'address-category',
 		'address-creator',
 		'notes-detail',
@@ -270,8 +271,14 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
 })
   
   ````
+  In the above code, I added the fields as I normally would. For example: creator, owner, id. etc. 
+
+  Then, I added the arrays. I used a dash "-" to separator the arrays. i.e. address-apartment, address-category, note-detail
   
-  In the above code, I first added the arrays. address-apartment state the address is the key that contained the array. and apartment is a key inside of the object inside the address array. Here's the model snippet. 
+  This state that address and notes are the keys that contain the array. 
+
+  Here's a snippet of the model.
+
   ````
   address: [{
     apartment: String,
@@ -286,11 +293,10 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
  Notice, in Objectifying the data. I  include a separator. The separator can be whatever you want it to be. It can even be a string. 
  
  address-apartment. The "-" is the separator.
- If you wanted, you could have change the separator to a pipe like so |
+ If you want, you could have change the separator to a pipe like so |
  
  ````
- 		// add arrays
-    		'address|apartment',
+    	'address|apartment',
 		'address|category',
 		'address|creator',
 		'notes|detail',
@@ -306,21 +312,19 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
  
  Now, such a complex router is simplified and dried up using router-post:
  
- 6. Now, lets focus the following
+ - Now, lets focus the following
  ````
 	routerPost.findPostOne(Place, [ data, req, res ], { id: data.id }, []);
  ````
  
- First, I have to pass the model which is Place.
- Then, inside an array, I pass in data, req, res. data is the data that I am saving. Req and Res are being passed in order to obviosly make requests and also responses. 
- 
- Next, I pass in id: data.id. 
- 
- The third argument is to identify what it is that I am passing. Whatever logic you would pass in order to find and post one, you could do it here. As for me, I only want to find by id. 
- 
+The first argument is the actual model. 
+
+The second argument is an array that includes data, requests and responses.
+
+The third argument is the condition. If there is an id that matched data.id, we should update instead of create. If not, we should create. 
  
  
- 7. Lets say you want to add additional fields. Fields that you are not getting from the datasource (req.body). 
+ - Lets say you want to add additional fields. Fields that you are not getting from the datasource (req.body). 
  
  if you want to add an additional field to the data. Let's say you want to created to default updated_at to Date.now().
  You will do the following:
@@ -332,37 +336,37 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
  ````
  And of course, you would of pass it with the rest of the field above. This is simply if you wanted to pass it in the router instead of in the request. 
  
- 8. Lets say you wanted to add additional field to the arrays itselves. Lets say you wanted to add an updated_at default to the address array and the notes array. 
+ - Lets say you wanted to add additional field to the arrays itselves. Lets say you wanted to add an updated_at default to the address array and the notes array. 
  
  You would do the following.
 
   ````
  routerPost.findPostOne(Place, [ data, req, res ], { id: data.id }, [
-		{
-			condition: true,
-			push: [
-				{
-					field: 'address',
-					value: data.address[0]
-				}
-			]
-		},
-		{
-			condition: data.notes[0].creator !== undefined,
-			push: [
-				{
-					field: 'notes',
-					value: data.notes[0]
-				}
-			],
-			addons: [
-				{
-					field: 'updated_at',
-					value: Date.now()
-				}
-			]
-		}
-   ]
+	{
+		condition: true,
+		push: [
+			{
+				field: 'address',
+				value: data.address[0]
+			}
+		]
+	},
+	{
+		condition: data.notes[0].creator !== undefined,
+		push: [
+			{
+				field: 'notes',
+				value: data.notes[0]
+			}
+		],
+		addons: [
+			{
+				field: 'updated_at',
+				value: Date.now()
+			}
+		]
+	}
+]
   
   ````
   
