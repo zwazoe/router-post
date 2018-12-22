@@ -156,17 +156,17 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
 
 	const placeFields = {};
 	placeFields.user = req.user.id;
-	if (req.body.creator) placeFields.handle = req.body.creator;
-	if (req.body.owner) placeFields.company = req.body.owner;
-	if (req.body.id) placeFields.website = req.body.id;
-	if (req.body.place_id) placeFields.location = req.body.place_id;
-	if (req.body.icon) placeFields.bio = req.body.icon;
-  	if (req.body.name) placeFields.website = req.body.name;
-	if (req.body.formated_address) placeFields.location = req.body.formated_address;
-	if (req.body.formated_phone_number) placeFields.bio = req.body.formated_phone_number;
-  	if (req.body.location) placeFields.website = req.body.location;
-	if (req.body.label) placeFields.location = req.body.label;
-	if (req.body.types) placeFields.bio = req.body.types;
+	if (req.body.creator) placeFields.creator = req.body.creator;
+	if (req.body.owner) placeFields.owner = req.body.owner;
+	if (req.body.id) placeFields.id = req.body.id;
+	if (req.body.place_id) placeFields.place_id = req.body.place_id;
+	if (req.body.icon) placeFields.icon = req.body.icon;
+  	if (req.body.name) placeFields.name = req.body.name;
+	if (req.body.formated_address) placeFields.formated_address = req.body.formated_address;
+	if (req.body.formated_phone_number) placeFields.formated_phone_number = req.body.formated_phone_number;
+  	if (req.body.location) placeFields.location = req.body.location;
+	if (req.body.label) placeFields.label = req.body.label;
+	if (req.body.types) placeFields.types = req.body.types;
  }
  	Place.findOne({ user: req.user.id }).then((place) => {
 		if (place) {
